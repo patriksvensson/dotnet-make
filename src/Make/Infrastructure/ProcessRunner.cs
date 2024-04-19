@@ -6,19 +6,29 @@ namespace Make;
 internal sealed class ProcessRunner : IProcessRunner
 {
     private readonly IEnvironment _environment;
+    private readonly IAnsiConsole _console;
 
-    public ProcessRunner(IEnvironment environment)
+    public ProcessRunner(
+        IEnvironment environment,
+        IAnsiConsole console)
     {
         _environment = environment ?? throw new ArgumentNullException(nameof(environment));
+        _console = console ?? throw new ArgumentNullException(nameof(console));
     }
 
     public async Task<int> Run(
         string executable, string? args,
+        bool trace = false,
         DirectoryPath? workingDirectory = null)
     {
         var working = workingDirectory == null
             ? _environment.WorkingDirectory
             : workingDirectory.MakeAbsolute(_environment);
+
+        if (trace)
+        {
+            _console.MarkupLine($"[gray]Executing:[/] {executable} {args}".Trim());
+        }
 
         var exitCode = 0;
         await SimpleExec.Command.RunAsync(
@@ -40,5 +50,6 @@ public interface IProcessRunner
 {
     Task<int> Run(
         string executable, string? args,
+        bool trace = false,
         DirectoryPath? workingDirectory = null);
 }

@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Spectre.IO;
 
 namespace Make;
@@ -28,15 +29,55 @@ public sealed class CakeRunner : IBuildRunner
     public async Task<int> Run(BuildContext context)
     {
         var root = context.Root ?? _environment.WorkingDirectory;
-
-        var args = string.Join(" ", context.RemainingArguments.Raw);
-        if (context.Target != null)
-        {
-            args += $"--target {context.Target}";
-        }
+        var args = GetArgs(context);
 
         return await _processRunner.Run(
             "dotnet", args: "cake " + args,
+            trace: context.Trace,
             workingDirectory: root);
+    }
+
+    private static string GetArgs(BuildContext context)
+    {
+        var result = new List<string>();
+
+        if (context.Target != null)
+        {
+            result.Add("--target");
+            result.Add($"\"{context.Target}\"");
+        }
+
+        foreach (var variable in context.RemainingArguments.Parsed)
+        {
+            var option = variable.Key.Length > 1
+                ? $"--{variable.Key}"
+                : $"-{variable.Key}";
+
+            var values = variable.ToArray();
+            if (values.Length > 0)
+            {
+                foreach (var value in variable)
+                {
+                    result.Add(option);
+
+                    if (value != null)
+                    {
+                        result.Add($"\"{value}\"");
+                    }
+                }
+            }
+            else
+            {
+                result.Add(option);
+            }
+        }
+
+        if (context.RemainingArguments.Raw.Count > 0)
+        {
+            result.Add("--");
+            result.AddRange(context.RemainingArguments.Raw);
+        }
+
+        return string.Join(" ", result);
     }
 }

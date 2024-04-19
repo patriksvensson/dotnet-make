@@ -14,6 +14,10 @@ public sealed class DefaultCommand : AsyncCommand<DefaultCommand.Settings>
         [CommandArgument(0, "[TARGET]")]
         [Description("The target to run")]
         public string? Target { get; set; }
+
+        [CommandOption("--trace")]
+        [Description("Outputs trace logging for the make tool")]
+        public bool Trace { get; set; }
     }
 
     public DefaultCommand(
@@ -28,7 +32,11 @@ public sealed class DefaultCommand : AsyncCommand<DefaultCommand.Settings>
     {
         // Create the build context
         var root = _rootFinder.Find();
-        var buildContext = new BuildContext(root, settings.Target, context.Remaining);
+        var buildContext = new BuildContext(
+            root,
+            settings.Target,
+            settings.Trace,
+            context.Remaining);
 
         // Figure out which build tool to invoke
         var runner = _runners.GetBuildRunner(buildContext);
