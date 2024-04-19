@@ -1,0 +1,47 @@
+<Project>
+  <PropertyGroup Label="Settings">
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Deterministic>true</Deterministic>
+    <LangVersion>12</LangVersion>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>embedded</DebugType>
+    <MinVerSkip Condition="'$(Configuration)' == 'Debug'">true</MinVerSkip>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Deterministic Build" Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Package Information">
+    <Description>A build tool for your build tools.</Description>
+    <Copyright>Patrik Svensson</Copyright>
+    <Authors>Patrik Svensson</Authors>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/patriksvensson/dotnet-make</RepositoryUrl>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <PackageProjectUrl>https://github.com/patriksvensson/dotnet-make</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReleaseNotes>https://github.com/patriksvensson/dotnet-make/releases</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Source Link">
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+  </PropertyGroup>
+
+  <ItemGroup Label="Static Analysis">
+    <PackageReference Include="MinVer" PrivateAssets="All" Version="4.3.0" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" Version="8.0.0" />
+    <PackageReference Include="Roslynator.Analyzers" Version="4.10.0">
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556" IsImplicitlyDefined="true">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)/stylecop.json" />
+  </ItemGroup>
+</Project>
