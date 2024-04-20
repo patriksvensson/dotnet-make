@@ -35,6 +35,7 @@ internal sealed class ProcessRunner : IProcessRunner
             name: executable,
             args: args ?? string.Empty,
             noEcho: true,
+            createNoWindow: true,
             workingDirectory: working.FullPath,
             handleExitCode: (e) =>
             {
