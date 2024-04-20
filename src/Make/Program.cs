@@ -48,7 +48,7 @@ public static class Program
         var services = new ServiceCollection();
 
         // Infrastructure
-        services.AddSingleton<RootFinder>();
+        services.AddSingleton<BuildRunnerSelector>();
         services.AddSingleton<BuildRunners>();
         services.AddSingleton<IProcessRunner, ProcessRunner>();
 

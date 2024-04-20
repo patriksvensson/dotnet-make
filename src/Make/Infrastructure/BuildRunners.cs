@@ -11,16 +11,8 @@ public sealed class BuildRunners
         _runners = runners.ToSafeReadOnlyList();
     }
 
-    public IBuildRunner? GetBuildRunner(BuildContext context)
+    public IEnumerable<IBuildRunner> GetBuildRunners()
     {
-        foreach (var runner in _runners)
-        {
-            if (runner.CanHandle(context))
-            {
-                return runner;
-            }
-        }
-
-        return null;
+        return _runners;
     }
 }

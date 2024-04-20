@@ -2,6 +2,6 @@ namespace Make;
 
 public interface IBuildRunner
 {
-    bool CanHandle(BuildContext context);
+    IEnumerable<string> GetGlobs();
     Task<int> Run(BuildContext context);
 }
