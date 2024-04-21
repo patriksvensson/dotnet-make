@@ -43,7 +43,7 @@ public sealed class BuildRunnerSelector
                     {
                         if (trace)
                         {
-                            _console.MarkupLine($"[gray]Found root:[/] {current.FullPath} [gray]using glob[/] {glob}");
+                            _console.MarkupLine($"[gray]Found root[/] {current.FullPath} [gray]using glob[/] {glob}");
                         }
 
                         return (current, runner);
