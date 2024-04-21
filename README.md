@@ -24,14 +24,17 @@ OPTIONS:
     -v, --version    Prints version information
 ```
 
-The tool uses conventions to figure out how to invoke the build of you projects. 
-Currently, only [Cake][1] is supported, but support for [Frosting][2], 
-make files, solution files, and [MSBuild traversal projects][3]
-are planned.
+The tool uses conventions to determine how to invoke your projects' builds. Currently, only [Cake][1], [Frosting][2], and [Make][3] are supported. Support for solution files and [MSBuild traversal projects][4] is planned.
+
+## Supported build providers
+
+* [Cake][1]
+* [Cake Frosting][2]
+* [Make][3]
 
 ## Building
 
-We're using [Cake][1] as a [dotnet tool][4]
+We're using [Cake][1] as a [dotnet tool][5]
 for building. So make sure that you've restored Cake by running 
 the following in the repository root:
 
@@ -47,5 +50,6 @@ After that, running the build is as easy as writing:
 
 [1]: https://github.com/cake-build/cake
 [2]: https://cakebuild.net/docs/running-builds/runners/cake-frosting
-[3]: https://github.com/microsoft/MSBuildSdks/blob/main/src/Traversal/README.md
-[4]: https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools
+[3]: https://en.wikipedia.org/wiki/Make_(software)
+[4]: https://github.com/microsoft/MSBuildSdks/blob/main/src/Traversal/README.md
+[5]: https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools
