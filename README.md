@@ -51,6 +51,10 @@ After that, running the build is as easy as writing:
 > dotnet cake
 ```
 
+## Copyright
+
+Copyright (c) 2024 Patrik Svensson
+
 [1]: https://github.com/cake-build/cake
 [2]: https://cakebuild.net/docs/running-builds/runners/cake-frosting
 [3]: https://en.wikipedia.org/wiki/Make_(software)
