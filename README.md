@@ -24,17 +24,20 @@ OPTIONS:
     -v, --version    Prints version information
 ```
 
-The tool uses conventions to determine how to invoke your projects' builds. Currently, only [Cake][1], [Frosting][2], and [Make][3] are supported. Support for solution files and [MSBuild traversal projects][4] is planned.
+The tool uses conventions to determine how to invoke your projects' builds.
 
 ## Supported build providers
 
 * [Cake][1]
-* [Cake Frosting][2]
+* [Frosting][2]
 * [Make][3]
+* [Project files][4] _(csproj, fsproj, vbproj)_
+* [Solution files][5] _(sln)_
+* [MSBuild traversal projects][6] _(proj)_
 
 ## Building
 
-We're using [Cake][1] as a [dotnet tool][5]
+We're using [Cake][1] as a [dotnet tool][7]
 for building. So make sure that you've restored Cake by running 
 the following in the repository root:
 
@@ -51,5 +54,7 @@ After that, running the build is as easy as writing:
 [1]: https://github.com/cake-build/cake
 [2]: https://cakebuild.net/docs/running-builds/runners/cake-frosting
 [3]: https://en.wikipedia.org/wiki/Make_(software)
-[4]: https://github.com/microsoft/MSBuildSdks/blob/main/src/Traversal/README.md
-[5]: https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools
+[4]: https://learn.microsoft.com/en-us/dotnet/core/project-sdk/overview#project-files
+[5]: https://learn.microsoft.com/en-us/visualstudio/extensibility/internals/solution-dot-sln-file?view=vs-2022
+[6]: https://github.com/microsoft/MSBuildSdks/blob/main/src/Traversal/README.md
+[7]: https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools
