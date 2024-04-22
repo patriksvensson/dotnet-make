@@ -18,6 +18,10 @@ public sealed class DefaultCommand : AsyncCommand<DefaultCommand.Settings>
         [CommandOption("--trace", IsHidden = true)]
         [Description("Outputs trace logging for the make tool")]
         public bool Trace { get; set; }
+
+        [CommandOption("--prefer <RUNNER>")]
+        [Description("Uses the preferred runner")]
+        public string? Prefer { get; set; }
     }
 
     public DefaultCommand(
@@ -30,22 +34,25 @@ public sealed class DefaultCommand : AsyncCommand<DefaultCommand.Settings>
 
     public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
     {
-        // Create the build context
-        var result = _buildRunnerSelector.Find(settings.Trace);
+        var options = new MakeSettings
+        {
+            Trace = settings.Trace,
+            Prefer = settings.Prefer,
+        };
+
+        var result = _buildRunnerSelector.Find(options);
         if (result == null)
         {
             throw new MakeException("Could not find a suitable build tool", null);
         }
 
-        var root = result.Value.Root;
-        var runner = result.Value.Runner;
-
         var buildContext = new BuildContext(
-            root,
+            result.Value.Root,
             settings.Target,
             settings.Trace,
             context.Remaining);
 
-        return await runner.Run(buildContext);
+        return await result.Value.Runner
+            .Run(buildContext);
     }
 }

@@ -56,6 +56,9 @@ public static class Program
         services.AddSingleton<IBuildRunner, CakeRunner>();
         services.AddSingleton<IBuildRunner, FrostingRunner>();
         services.AddSingleton<IBuildRunner, MakefileRunner>();
+        services.AddSingleton<IBuildRunner, TraversalRunner>();
+        services.AddSingleton<IBuildRunner, ProjectRunner>();
+        services.AddSingleton<IBuildRunner, SolutionRunner>();
 
         // File system
         services.AddSingleton<IFileSystem, FileSystem>();

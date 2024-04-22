@@ -8,6 +8,7 @@ public sealed class BuildRunnerSelector
     private readonly IEnvironment _environment;
     private readonly IAnsiConsole _console;
     private readonly BuildRunners _runners;
+    private readonly Dictionary<string, IBuildRunner> _runnerLookup;
 
     public BuildRunnerSelector(
         IGlobber globber,
@@ -19,18 +20,36 @@ public sealed class BuildRunnerSelector
         _environment = environment ?? throw new ArgumentNullException(nameof(environment));
         _console = console ?? throw new ArgumentNullException(nameof(console));
         _runners = runners ?? throw new ArgumentNullException(nameof(runners));
+
+        _runnerLookup = new Dictionary<string, IBuildRunner>();
+        foreach (var runner in _runners.GetBuildRunners())
+        {
+            foreach (var name in runner.GetKeywords())
+            {
+                _runnerLookup[name] = runner;
+            }
+        }
     }
 
-    public (DirectoryPath Root, IBuildRunner Runner)? Find(bool trace)
+    public (DirectoryPath Root, IBuildRunner Runner)? Find(MakeSettings settings)
     {
         var comparer = new PathComparer(isCaseSensitive: false);
 
-        foreach (var runner in _runners.GetBuildRunners())
+        var current = _environment.WorkingDirectory;
+        while (current is { IsRoot: false })
         {
-            var current = _environment.WorkingDirectory;
-            while (current is { IsRoot: false })
+            foreach (var runner in _runners.GetBuildRunners())
             {
-                foreach (var glob in runner.GetGlobs())
+                var names = new HashSet<string>(runner.GetKeywords());
+                if (settings.Prefer != null)
+                {
+                    if (!names.Contains(settings.Prefer))
+                    {
+                        continue;
+                    }
+                }
+
+                foreach (var glob in runner.GetGlobs(settings))
                 {
                     var candidates = _globber
                         .Match(glob, new GlobberSettings
@@ -41,18 +60,23 @@ public sealed class BuildRunnerSelector
 
                     if (candidates.Any())
                     {
-                        if (trace)
+                        if (settings.Trace)
                         {
-                            _console.MarkupLine($"[gray]Found root[/] {current.FullPath} [gray]using glob[/] {glob}");
+                            _console.MarkupLine(
+                                $"[gray]Found root[/] {current.FullPath} [gray]using glob[/] {glob}");
                         }
 
-                        return (current, runner);
+                        if (runner.CanRun(settings, current))
+                        {
+                            _console.MarkupLine($"[gray]Using runner[/] {runner.Name}");
+                            return (current, runner);
+                        }
                     }
                 }
-
-                // Check the parent directory
-                current = current.GetParent();
             }
+
+            // Check the parent directory
+            current = current.GetParent();
         }
 
         return null;

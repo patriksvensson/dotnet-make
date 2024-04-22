@@ -13,6 +13,6 @@ public sealed class BuildRunners
 
     public IEnumerable<IBuildRunner> GetBuildRunners()
     {
-        return _runners;
+        return _runners.OrderBy(x => x.Order);
     }
 }

@@ -1,17 +1,34 @@
+using Spectre.IO;
+
 namespace Make;
 
 public sealed class CakeRunner : IBuildRunner
 {
     private readonly IProcessRunner _processRunner;
 
+    public string Name { get; } = "Cake Runner";
+    public int Order { get; } = 0;
+
     public CakeRunner(IProcessRunner processRunner)
     {
         _processRunner = processRunner ?? throw new ArgumentNullException(nameof(processRunner));
     }
 
-    public IEnumerable<string> GetGlobs()
+    public IEnumerable<string> GetKeywords()
+    {
+        return ["cake"];
+    }
+
+    public IEnumerable<string> GetGlobs(MakeSettings settings)
     {
         return ["./build.cake"];
+    }
+
+    public bool CanRun(MakeSettings settings, DirectoryPath path)
+    {
+        // Since we only match on a single thing (with no wildcards),
+        // we're sure that we can run it.
+        return true;
     }
 
     public async Task<int> Run(BuildContext context)
@@ -34,38 +51,7 @@ public sealed class CakeRunner : IBuildRunner
             result.Add($"\"{context.Target}\"");
         }
 
-        // TODO: Update Spectre.Console to include contextual information
-        // about the remaining arguments.
-        foreach (var variable in context.RemainingArguments.Parsed)
-        {
-            var option = variable.Key.Length > 1
-                ? $"--{variable.Key}"
-                : $"-{variable.Key}";
-
-            var values = variable.ToArray();
-            if (values.Length > 0)
-            {
-                foreach (var value in variable)
-                {
-                    result.Add(option);
-
-                    if (value != null)
-                    {
-                        result.Add($"\"{value}\"");
-                    }
-                }
-            }
-            else
-            {
-                result.Add(option);
-            }
-        }
-
-        if (context.RemainingArguments.Raw.Count > 0)
-        {
-            result.Add("--");
-            result.AddRange(context.RemainingArguments.Raw);
-        }
+        result.AddRange(context.GetArgs());
 
         return string.Join(" ", result);
     }

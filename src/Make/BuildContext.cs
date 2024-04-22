@@ -20,4 +20,41 @@ public sealed class BuildContext
         Trace = trace;
         RemainingArguments = remainingArguments ?? throw new ArgumentNullException(nameof(remainingArguments));
     }
+
+    public List<string> GetArgs()
+    {
+        var result = new List<string>();
+
+        foreach (var variable in RemainingArguments.Parsed)
+        {
+            var option = variable.Key.Length > 1
+                ? $"--{variable.Key}"
+                : $"-{variable.Key}";
+
+            var values = variable.ToArray();
+            if (values.Length > 0)
+            {
+                foreach (var value in variable)
+                {
+                    result.Add(option);
+
+                    if (value != null)
+                    {
+                        result.Add($"\"{value}\"");
+                    }
+                }
+            }
+            else
+            {
+                result.Add(option);
+            }
+        }
+
+        if (RemainingArguments.Raw.Count > 0)
+        {
+            result.AddRange(RemainingArguments.Raw);
+        }
+
+        return result;
+    }
 }
