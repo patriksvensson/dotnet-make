@@ -7,7 +7,7 @@
     <OutputType>Exe</OutputType>
     <IsPackable>true</IsPackable>
     <PackAsTool>true</PackAsTool>
-    <PackageId>Makerz</PackageId>
+    <PackageId>Make</PackageId>
     <ToolCommandName>dotnet-make</ToolCommandName>
     <RootNamespace>Make</RootNamespace>
   </PropertyGroup>
