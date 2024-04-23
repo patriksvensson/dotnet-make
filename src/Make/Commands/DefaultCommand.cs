@@ -20,7 +20,7 @@ public sealed class DefaultCommand : AsyncCommand<DefaultCommand.Settings>
         public bool Trace { get; set; }
 
         [CommandOption("--prefer <RUNNER>")]
-        [Description("Uses the preferred runner")]
+        [Description("Uses the preferred runner. Available runners are [blue]cake[/], [blue]frosting[/], [blue]project[/], [blue]sln[/], [blue]traversal[/]")]
         public string? Prefer { get; set; }
     }
 

@@ -20,8 +20,10 @@ ARGUMENTS:
     [TARGET]    The target to run
 
 OPTIONS:
-    -h, --help       Prints help information                                    
-    -v, --version    Prints version information
+    -h, --help               Prints help information
+    -v, --version            Prints version information
+        --prefer <RUNNER>    Uses the preferred runner. Available runners
+                             are cake, frosting, project, sln, traversal
 ```
 
 The tool uses conventions to determine how to invoke your projects' builds.

@@ -25,7 +25,7 @@ public sealed class TraversalRunner : IBuildRunner
 
     public IEnumerable<string> GetKeywords()
     {
-        return ["traversal", "msbuild"];
+        return ["traversal"];
     }
 
     public IEnumerable<string> GetGlobs(MakeSettings settings)

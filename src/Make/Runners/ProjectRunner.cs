@@ -25,7 +25,7 @@ public sealed class ProjectRunner : IBuildRunner
 
     public IEnumerable<string> GetKeywords()
     {
-        return ["csproj", "fsproj", "vbproj", "project"];
+        return ["project"];
     }
 
     public IEnumerable<string> GetGlobs(MakeSettings settings)
