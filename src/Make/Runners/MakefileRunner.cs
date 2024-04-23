@@ -33,11 +33,13 @@ public sealed class MakefileRunner : IBuildRunner
 
     public async Task<int> Run(BuildContext context)
     {
-        var args = context.GetArgs();
+        var args = new List<string>();
         if (context.Target != null)
         {
             args.Insert(0, context.Target);
         }
+
+        args.AddRange(context.RemainingArguments.Raw);
 
         return await _processRunner.Run(
             "make", string.Join(" ", args),

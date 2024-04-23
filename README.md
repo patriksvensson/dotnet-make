@@ -28,6 +28,18 @@ OPTIONS:
 
 The tool uses conventions to determine how to invoke your projects' builds.
 
+## Passing arguments to the build provider
+
+Everything after `--` will be passed as-is to the build provider.
+
+```console
+# Pass parameter to MSBuild
+$ dotnet make -- /p:foo=bar
+
+# Pass parameter to Cake
+$ dotnet make -- --foo bar
+```
+
 ## Supported build providers
 
 * [Cake][1]

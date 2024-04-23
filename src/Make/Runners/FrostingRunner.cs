@@ -55,7 +55,7 @@ public sealed class FrostingRunner : IBuildRunner
             result.Add($"\"{context.Target}\"");
         }
 
-        result.AddRange(context.GetArgs());
+        result.AddRange(context.RemainingArguments.Raw);
 
         return string.Join(" ", result);
     }

@@ -51,7 +51,12 @@ public sealed class TraversalRunner : IBuildRunner
         var args = new List<string>();
         args.Add("build");
         args.Add(result.GetFilename().FullPath);
-        args.AddRange(context.GetArgs());
+        args.AddRange(context.RemainingArguments.Raw);
+
+        if (context.Target != null)
+        {
+            args.Add($"-target:{context.Target}");
+        }
 
         return await _processRunner.Run(
             "dotnet", string.Join(" ", args),
