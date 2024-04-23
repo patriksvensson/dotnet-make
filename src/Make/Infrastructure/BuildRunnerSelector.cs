@@ -68,7 +68,11 @@ public sealed class BuildRunnerSelector
 
                         if (runner.CanRun(settings, current))
                         {
-                            _console.MarkupLine($"[gray]Using runner[/] {runner.Name}");
+                            if (settings.Trace)
+                            {
+                                _console.MarkupLine($"[gray]Using runner[/] {runner.Name}");
+                            }
+
                             return (current, runner);
                         }
                     }
