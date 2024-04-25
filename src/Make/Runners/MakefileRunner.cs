@@ -39,7 +39,7 @@ public sealed class MakefileRunner : IBuildRunner
             args.Insert(0, context.Target);
         }
 
-        args.AddRange(context.RemainingArguments.Raw);
+        context.AddArgs(args);
 
         return await _processRunner.Run(
             "make", string.Join(" ", args),

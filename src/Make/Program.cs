@@ -12,7 +12,7 @@ public static class Program
         app.Configure(config =>
         {
             config.SetApplicationName("dotnet make");
-            config.SetExceptionHandler(ex =>
+            config.SetExceptionHandler((ex, _) =>
             {
                 if (ex is CommandRuntimeException)
                 {

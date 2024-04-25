@@ -41,7 +41,7 @@ public sealed class FrostingRunner : IBuildRunner
 
     private static string GetArgs(BuildContext context)
     {
-        var result = new List<string>
+        var args = new List<string>
         {
             "run",
             "--project",
@@ -51,12 +51,12 @@ public sealed class FrostingRunner : IBuildRunner
 
         if (context.Target != null)
         {
-            result.Add("--target");
-            result.Add($"\"{context.Target}\"");
+            args.Add("--target");
+            args.Add($"\"{context.Target}\"");
         }
 
-        result.AddRange(context.RemainingArguments.Raw);
+        context.AddArgs(args);
 
-        return string.Join(" ", result);
+        return string.Join(" ", args);
     }
 }

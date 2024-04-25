@@ -51,7 +51,8 @@ public sealed class ProjectRunner : IBuildRunner
         var args = new List<string>();
         args.Add("build");
         args.Add(result.GetFilename().FullPath);
-        args.AddRange(context.RemainingArguments.Raw);
+
+        context.AddArgs(args);
 
         if (context.Target != null)
         {
