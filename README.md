@@ -4,7 +4,7 @@ A build tool for your build tools.
 
 ## Installing
 
-Install the tool by running `dotnet tool -g install make` in your terminal.
+Install the tool by running `dotnet tool install -g make` in your terminal.
 If you want to install the tool on a repository basis, omit the `-g` option.
 
 
