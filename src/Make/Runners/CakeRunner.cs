@@ -21,7 +21,7 @@ public sealed class CakeRunner : IBuildRunner
 
     public IEnumerable<string> GetGlobs(MakeSettings settings)
     {
-        return ["./build.cake"];
+        return ["./build.cake", "recipe.cake"];
     }
 
     public bool CanRun(MakeSettings settings, DirectoryPath path)
@@ -43,7 +43,10 @@ public sealed class CakeRunner : IBuildRunner
 
     private static string GetArgs(BuildContext context)
     {
-        var args = new List<string>();
+        var args = new List<string>
+        {
+            context.Candidates.FirstOrDefault()?.Segments.LastOrDefault() ?? "build.cake",
+        };
 
         if (context.Target != null)
         {
