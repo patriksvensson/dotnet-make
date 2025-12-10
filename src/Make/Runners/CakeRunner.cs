@@ -21,7 +21,7 @@ public sealed class CakeRunner : IBuildRunner
 
     public IEnumerable<string> GetGlobs(MakeSettings settings)
     {
-        return ["./build.cake", "recipe.cake"];
+        return ["./build.cake", "./recipe.cake"];
     }
 
     public bool CanRun(MakeSettings settings, DirectoryPath path)
